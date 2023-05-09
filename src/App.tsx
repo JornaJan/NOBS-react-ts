@@ -20,6 +20,18 @@ const List: FC<{
     </ul>
 )
 
+const Button: FC<
+    React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
+> & { title?: string } = ({title, children, ...rest}) => (
+    <button
+        style={{
+            backgroundColor: "red",
+            color: "white",
+            fontSize: "xx-large"
+        }}
+        {...rest}>{title ?? children}</button>
+)
+
 interface Payload {
     text: string
 }
@@ -43,7 +55,7 @@ const Incrementer: FC<{
     value: UseNumberValue,
     setValue: UseNumberSetValue
 }> = ({ value, setValue }) => (
-    <button onClick={() => setValue(value +1)}>Add -  {value}</button>
+    <Button onClick={() => setValue(value +1)} title={`Add - ${value}`} />
 )
 
 function App() {
@@ -109,15 +121,15 @@ function App() {
             {todos.map((todo) => (
                 <div key={todo.id}>
                     {todo.text}
-                    <button onClick={() => dispatch({
+                    <Button onClick={() => dispatch({
                         type: 'REMOVE',
                         id: todo.id
-                    })}>Remove</button>
+                    })}>Remove</Button>
                 </div>
             ))}
             <div>
                 <input type="text" ref={newTodoRef} />
-                <button onClick={onAddTodo}>Add Todo</button>
+                <Button onClick={onAddTodo}>Add Todo</Button>
             </div>
         </div>
     )
