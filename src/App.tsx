@@ -33,6 +33,19 @@ interface Todo {
 type ActionType =
     | { type: 'ADD', text: string }
     | { type: 'REMOVE', id: number }
+
+const useNumber = (initialValue: number) => useState<number>(initialValue)
+
+type UseNumberValue = ReturnType<typeof useNumber>[0]
+type UseNumberSetValue = ReturnType<typeof useNumber>[1]
+
+const Incrementer: FC<{
+    value: UseNumberValue,
+    setValue: UseNumberSetValue
+}> = ({ value, setValue }) => (
+    <button onClick={() => setValue(value +1)}>Add -  {value}</button>
+)
+
 function App() {
     const onListClick = useCallback((item: string) => {
         alert(item)
@@ -78,6 +91,7 @@ function App() {
         }
     }, [])
 
+    const [value, setValue] = useNumber(0)
 
     return (
         <div className="App">
@@ -88,6 +102,8 @@ function App() {
                 onClick={onListClick}
             />
             <Box>{JSON.stringify(checkedState)}</Box>
+
+            <Incrementer value={value} setValue={setValue} />
 
             <Heading title="Todos" />
             {todos.map((todo) => (
